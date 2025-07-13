@@ -18,7 +18,8 @@ Router::get('/logout', SecurityController::class, 'logout');
 Router::get('/client/dashboard', SecurityController::class, 'dashboard');
 
 // ✅ ROUTES AGENT MODIFIÉES - Plus de registration, connexion directe
-Router::get('/agent', SecurityController::class, 'agentChoice'); // Redirige directement vers /agent/login
+Router::get('/agent/choice', SecurityController::class, 'agentChoice'); // Ancienne route pour compatibilité
+Router::get('/agent', SecurityController::class, 'agentChoice'); // Nouvelle route
 Router::get('/agent/login', SecurityController::class, 'agentLoginForm'); // Formulaire de connexion agent
 Router::post('/agent/login', SecurityController::class, 'agentAuthenticate'); // Traite la connexion agent
 Router::get('/agent/dashboard', SecurityController::class, 'agentDashboard'); // Dashboard agent

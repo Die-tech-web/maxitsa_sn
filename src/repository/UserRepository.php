@@ -3,13 +3,13 @@ namespace App\Repository;
 
 use PDO;
 use PDOException;
-use App\Core\Database;
+use App\Core\DataBase;
 
 class UserRepository {
     private PDO $pdo;
 
     public function __construct() {
-        $this->pdo = Database::getInstance()->getConnexion();
+        $this->pdo = DataBase::getInstance()->getConnexion();
     }
 
     public function insert(
@@ -66,15 +66,58 @@ class UserRepository {
         }
     }
 
-    public function telephoneExists(string $telephone): bool {
+
+
+
+
+
+
+
+
+
+    /**
+     * Trouve un utilisateur par téléphone
+     */
+    public function findByTelephone($telephone)
+    {
         try {
-            $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM "user" WHERE telephone = :telephone');
-            $stmt->bindParam(':telephone', $telephone);
+            $sql = "SELECT * FROM \"user\" WHERE telephone = :telephone LIMIT 1";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':telephone', $telephone, PDO::PARAM_STR);
             $stmt->execute();
-            return $stmt->fetchColumn() > 0;
-        } catch (PDOException $e) {
-            return false;
+        
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?: null;
+        } catch (Exception $e) {
+            error_log("Erreur findByTelephone: " . $e->getMessage());
+            return null;
         }
+    }
+
+    /**
+     * Vérifie si un téléphone existe déjà
+     */
+    public function telephoneExists($telephone)
+    {
+        $sql = "SELECT COUNT(*) FROM \"user\" WHERE telephone = :telephone";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':telephone', $telephone);
+        $stmt->execute();
+        
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Vérifie si un CNI existe déjà
+     */
+    public function cniExists($cni)
+    {
+        $sql = "SELECT COUNT(*) FROM \"user\" WHERE cni = :cni";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':cni', $cni);
+        $stmt->execute();
+        
+        return $stmt->fetchColumn() > 0;
     }
 
     public function register()
@@ -86,16 +129,16 @@ class UserRepository {
     exit;
 }
 
-    public function cniExists(string $cni): bool {
-        try {
-            $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM "user" WHERE cni = :cni');
-            $stmt->bindParam(':cni', $cni);
-            $stmt->execute();
-            return $stmt->fetchColumn() > 0;
-        } catch (PDOException $e) {
-            return false;
-        }
-    }
+
+
+
+
+
+
+
+
+
+
 
     public function findByTelephoneAndPassword(string $telephone, string $password): ?array {
         try {
@@ -104,7 +147,8 @@ class UserRepository {
             $stmt->execute();
             
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            
+            // var_dump($user);
+            // die(); // Debugging line to check user data
             if ($user && password_verify($password, $user['password'])) {
                 return $user;
             }
@@ -114,13 +158,13 @@ class UserRepository {
         }
     }
 
-        public function findByTelephone(string $telephone): ?array
-            {
-                $sql = 'SELECT * FROM "user" WHERE "telephone" = :telephone';
-                $stmt = $this->pdo->prepare($sql);
-                $stmt->execute(['telephone' => $telephone]);
-                $user = $stmt->fetch(\PDO::FETCH_ASSOC);
-                return $user ?: null;
-            }
+
+
+
+
+
+
+
+
 
 }

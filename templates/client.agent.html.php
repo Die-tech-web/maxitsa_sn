@@ -28,10 +28,10 @@
                     CLIENT
                 </a>
                 
-                <!-- Bouton Service Commercial - Pour plus tard -->
-                <button class="w-full border border-black text-black py-3 rounded-lg mb-4 font-semibold hover:bg-gray-100 transition">
-                    SERVICE COMMERCIAL
-                </button>
+                <!-- Bouton Service Commercial - Redirige vers inscription agent -->
+                <a href="/agent" class="block w-full border border-black text-black py-3 rounded-lg mb-4 font-semibold hover:bg-gray-100 transition text-center">
+                    AGENT
+                </a>
                 
                 <!-- Bouton Se Connecter - Pour les utilisateurs existants -->
                 <a href="/login" class="block w-full bg-[#a54f0d] text-white py-3 rounded-lg font-semibold mb-6 hover:brightness-110 transition text-center">

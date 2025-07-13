@@ -22,12 +22,12 @@ class CompteController
     public function index()
     {
         $comptes = $this->compteRepository->findAll();
-        $this->renderHtml('compte/index.php', ['comptes' => $comptes]);
+        $this->render('compte/index.php', ['comptes' => $comptes]);
     }
 
     public function create()
     {
-        $this->renderHtml('compte/create.php', ['title' => 'Créer un compte']);
+        $this->render('compte/create.php', ['title' => 'Créer un compte']);
     }
 
     public function store()
@@ -37,7 +37,7 @@ class CompteController
 
         // Validation simple
         if (empty($data['nom']) || empty($data['prenom']) || empty($data['email']) || empty($data['telephone']) || empty($data['id_user'])) {
-            $this->renderHtml('compte/create.php', [
+            $this->render('compte/create.php', [
                 'errors' => ['Tous les champs (nom, prenom, email, telephone, utilisateur) sont requis.'],
                 'title' => 'Créer un compte'
             ]);
@@ -46,7 +46,7 @@ class CompteController
 
         // Upload fichier photo (optionnel)
         if ($file && !$this->fileUploadService->upload($file)) {
-            $this->renderHtml('compte/create.php', [
+            $this->render('compte/create.php', [
                 'errors' => $this->fileUploadService->getErrors(),
                 'title' => 'Créer un compte'
             ]);
@@ -84,4 +84,9 @@ class CompteController
         }
         $this->renderHtml('compte/show.php', ['compte' => $compte]);
     }
+
+   
+
+ 
+
 }
